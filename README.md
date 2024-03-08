@@ -1,5 +1,5 @@
 # ShellGPT
-一个由 AI 大型语言模型（LLM）驱动的命令行生产力工具。该命令行工具提供了对 **shell 命令、代码片段、文档 ** 的简化生成，消除了对外部资源（如 Google 搜索）的需求。支持 Linux、macOS、Windows，并与 PowerShell、CMD、Bash、Zsh 等主要 Shell 兼容。
+一个由 AI 大型语言模型（LLM）驱动的命令行生产力工具。该命令行工具提供了对 **shell 命令、代码片段、文档** 的简化生成，消除了对外部资源（如 Google 搜索）的需求。支持 Linux、macOS、Windows，并与 PowerShell、CMD、Bash、Zsh 等主要 Shell 兼容。
 
 https://github.com/TheR1D/shell_gpt/assets/16740832/9197283c-db6a-4b46-bfea-3eb776dd9093
 
