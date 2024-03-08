@@ -1,119 +1,124 @@
 # ShellGPT
-A command-line productivity tool powered by AI large language models (LLM). This command-line tool offers streamlined generation of **shell commands, code snippets, documentation**, eliminating the need for external resources (like Google search). Supports Linux, macOS, Windows and compatible with all major Shells like PowerShell, CMD, Bash, Zsh, etc.
+一个由AI大型语言模型（LLM）驱动的命令行生产力工具。该命令行工具提供了对**shell命令、代码片段、文档**的简化生成，消除了对外部资源（如Google搜索）的需求。支持Linux、macOS、Windows，并与PowerShell、CMD、Bash、Zsh等主要Shell兼容。
 
 https://github.com/TheR1D/shell_gpt/assets/16740832/9197283c-db6a-4b46-bfea-3eb776dd9093
 
-## Installation
+## 安装
 ```shell
 pip install shell-gpt
 ```
-By default, ShellGPT uses OpenAI's API and GPT-4 model. You'll need an API key, you can generate one [here](https://beta.openai.com/account/api-keys). You will be prompted for your key which will then be stored in `~/.config/shell_gpt/.sgptrc`. OpenAI API is not free of charge, please refer to the [OpenAI pricing](https://openai.com/pricing) for more information.
+默认情况下，ShellGPT使用OpenAI的API和GPT-4模型。您需要一个API密钥，您可以在[这里](https://beta.openai.com/account/api-keys)生成一个。您将被要求输入您的密钥，然后它将被存储在`~/.config/shell_gpt/.sgptrc`中。OpenAI API并非免费，有关更多信息，请参阅[OpenAI定价](https://openai.com/pricing)。
 
 > [!TIP]
-> Alternatively, you can use locally hosted open source models which are available for free. To use local models, you will need to run your own LLM backend server such as [Ollama](https://github.com/ollama/ollama). To set up ShellGPT with Ollama, please follow this comprehensive [guide](https://github.com/TheR1D/shell_gpt/wiki/Ollama).
+> 或者，您可以使用本地托管的开源模型，这些模型可免费使用。要使用本地模型，您需要运行自己的LLM后端服务器，例如[Ollama](https://github.com/ollama/ollama)。要使用Ollama设置ShellGPT，请按照这个详细的[指南](https://github.com/TheR1D/shell_gpt/wiki/Ollama)进行操作。
 >
-> **❗️Note that ShellGPT is not optimized for local models and may not work as expected.**
+> **❗️请注意，ShellGPT并未针对本地模型进行优化，可能无法按预期工作。**
 
-## Usage
-**ShellGPT** is designed to quickly analyse and retrieve information. It's useful for straightforward requests ranging from technical configurations to general knowledge.
+## 使用方法
+**ShellGPT**旨在快速分析和检索信息。它对于从技术配置到一般知识的简单请求非常有用。
 ```shell
-sgpt "What is the fibonacci sequence"
-# -> The Fibonacci sequence is a series of numbers where each number ...
+sgpt "什么是斐波那契数列"
+# -> 斐波那契数列是一系列数字，其中每个数字 ...
 ```
 
-ShellGPT accepts prompt from both stdin and command line argument. Whether you prefer piping input through the terminal or specifying it directly as arguments, `sgpt` got you covered. For example, you can easily generate a git commit message based on a diff:
+ShellGPT可以接受来自标准输入和命令行参数的提示。无论您是喜欢通过终端进行输入管道，还是直接指定参数，`sgpt`都可以满足您的需求。例如，您可以根据差异轻松生成一个git提交消息：
 ```shell
-git diff | sgpt "Generate git commit message, for my changes"
-# -> Added main feature details into README.md
+git diff | sgpt "为我的更改生成git提交消息"
+# -> 将主要功能详细信息添加到README.md中
 ```
 
-You can analyze logs from various sources by passing them using stdin, along with a prompt. For instance, we can use it to quickly analyze logs, identify errors and get suggestions for possible solutions:
+您可以通过使用stdin传递来自各种来源的日志，以及一个提示来分析日志。例如，我们可以使用它快速分析日志，识别错误并获得可能的解决方案建议：
 ```shell
-docker logs -n 20 my_app | sgpt "check logs, find errors, provide possible solutions"
+docker logs -n 20 my_app | sgpt "检查日志，查找错误，提供可能的解决方案"
 ```
 ```text
-Error Detected: Connection timeout at line 7.
-Possible Solution: Check network connectivity and firewall settings.
-Error Detected: Memory allocation failed at line 12.
-Possible Solution: Consider increasing memory allocation or optimizing application memory usage.
+检测到错误：第7行连接超时。
+可能的解决方案：检查网络连接和防火墙设置。
+检测到错误：第12行内存分配失败。
+可能的解决方案：考虑增加内存分配或优化应用程序内存使用。
 ```
 
-You can also use all kind of redirection operators to pass input:
+您还可以使用各种重定向运算符传递输入：
 ```shell
-sgpt "summarise" < document.txt
-# -> The document discusses the impact...
+sgpt "总结" < document.txt
+# -> 该文档讨论了影响...
 sgpt << EOF
-What is the best way to lear Golang?
-Provide simple hello world example.
+什么是学习Golang的最佳方法？
+提供一个简单的hello world示例。
 EOF
-# -> The best way to learn Golang...
-sgpt <<< "What is the best way to learn shell redirects?"
-# -> The best way to learn shell redirects is through...
+# -> 学习Golang的最佳方法是...
+sgpt <<< "什么是学习shell重定向的最佳方式？"
+# -> 学习shell重定向的最佳方式是通过...
 ```
 
+当然！使用Shell GPT，您可以快速生成常见的shell命令。只需使用`--shell`或`-s`选项，即可在终端中生成和执行所需的命令。
 
-### Shell commands
-Have you ever found yourself forgetting common shell commands, such as `find`, and needing to look up the syntax online? With `--shell` or shortcut `-s` option, you can quickly generate and execute the commands you need right in the terminal.
 ```shell
-sgpt --shell "find all json files in current folder"
+sgpt --shell "在当前文件夹中查找所有json文件"
 # -> find . -type f -name "*.json"
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-Shell GPT is aware of OS and `$SHELL` you are using, it will provide shell command for specific system you have. For instance, if you ask `sgpt` to update your system, it will return a command based on your OS. Here's an example using macOS:
+Shell GPT会根据您使用的操作系统和`$SHELL`环境变量提供特定系统的shell命令。例如，如果您要求`sgpt`更新您的系统，它将返回基于您的操作系统的命令。下面是在macOS上的示例：
+
 ```shell
-sgpt -s "update my system"
+sgpt -s "更新我的系统"
 # -> sudo softwareupdate -i -a
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-The same prompt, when used on Ubuntu, will generate a different suggestion:
+同样的提示，在Ubuntu上使用时，将生成不同的建议：
+
 ```shell
-sgpt -s "update my system"
+sgpt -s "更新我的系统"
 # -> sudo apt update && sudo apt upgrade -y
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-Let's try it with Docker:
+让我们尝试一下Docker：
+
 ```shell
-sgpt -s "start nginx container, mount ./index.html"
+sgpt -s "启动nginx容器，挂载./index.html"
 # -> docker run -d -p 80:80 -v $(pwd)/index.html:/usr/share/nginx/html/index.html nginx
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-We can still use pipes to pass input to `sgpt` and generate shell commands:
+我们仍然可以使用管道将输入传递给`sgpt`并生成shell命令：
+
 ```shell
-sgpt -s "POST localhost with" < data.json
+sgpt -s "使用以下数据在localhost上进行POST请求" < data.json
 # -> curl -X POST -H "Content-Type: application/json" -d '{"a": 1, "b": 2}' http://localhost
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-Applying additional shell magic in our prompt, in this example passing file names to `ffmpeg`:
+在提示中应用额外的shell技巧，例如将文件名传递给`ffmpeg`：
+
 ```shell
 ls
 # -> 1.mp4 2.mp4 3.mp4
-sgpt -s "ffmpeg combine $(ls -m) into one video file without audio."
+sgpt -s "使用$(ls -m)将多个视频文件合并为一个没有音频的视频文件。"
 # -> ffmpeg -i 1.mp4 -i 2.mp4 -i 3.mp4 -filter_complex "[0:v] [1:v] [2:v] concat=n=3:v=1 [v]" -map "[v]" out.mp4
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-If you would like to pass generated shell command using pipe, you can use `--no-interaction` option. This will disable interactive mode and will print generated command to stdout. In this example we are using `pbcopy` to copy generated command to clipboard:
+如果您想使用管道传递生成的shell命令，可以使用`--no-interaction`选项。这将禁用交互模式，并将生成的命令打印到stdout。在此示例中，我们使用`pbcopy`将生成的命令复制到剪贴板：
+
 ```shell
-sgpt -s "find all json files in current folder" --no-interaction | pbcopy
+sgpt -s "在当前文件夹中查找所有json文件" --no-interaction | pbcopy
 ```
 
 
 ### Shell integration
-This is a **very handy feature**, which allows you to use `sgpt` shell completions directly in your terminal, without the need to type `sgpt` with prompt and arguments. Shell integration enables the use of ShellGPT with hotkeys in your terminal, supported by both Bash and ZSH shells. This feature puts `sgpt` completions directly into terminal buffer (input line), allowing for immediate editing of suggested commands.
+这是一个非常方便的功能，它允许您在终端中直接使用 `sgpt` 的命令补全，无需输入 `sgpt` 的提示符和参数。Shell 集成功能支持使用热键在终端中使用 ShellGPT，支持 Bash 和 ZSH 两种 shell。该功能将 `sgpt` 的命令补全直接放入终端缓冲区（输入行），可以立即编辑建议的命令。
 
 https://github.com/TheR1D/shell_gpt/assets/16740832/bead0dab-0dd9-436d-88b7-6abfb2c556c1
 
-To install shell integration, run `sgpt --install-integration` and restart your terminal to apply changes. This will add few lines to your `.bashrc` or `.zshrc` file. After that, you can use `Ctrl+l` (by default) to invoke ShellGPT. When you press `Ctrl+l` it will replace you current input line (buffer) with suggested command. You can then edit it and just press `Enter` to execute.
+要安装 Shell 集成，运行 `sgpt --install-integration` 并重新启动终端以应用更改。这将在您的 `.bashrc` 或 `.zshrc` 文件中添加几行代码。之后，您可以使用 `Ctrl+l`（默认情况下）来调用 ShellGPT。按下 `Ctrl+l` 后，它将用建议的命令替换当前的输入行（缓冲区）。您可以编辑它，然后按下 `Enter` 来执行命令。
 
-### Generating code
-By using the `--code` or `-c` parameter, you can specifically request pure code output, for instance:
+### 生成代码
+通过使用 `--code` 或 `-c` 参数，您可以明确请求纯代码输出，例如：
 ```shell
-sgpt --code "solve fizz buzz problem using python"
+sgpt --code "使用 Python 解决 Fizz Buzz 问题"
 ```
 
 ```python
@@ -127,9 +132,9 @@ for i in range(1, 101):
     else:
         print(i)
 ```
-Since it is valid python code, we can redirect the output to a file:  
+由于这是有效的 Python 代码，我们可以将其重定向到一个文件中：
 ```shell
-sgpt --code "solve classic fizz buzz problem using Python" > fizz_buzz.py
+sgpt --code "使用 Python 解决经典 Fizz Buzz 问题" > fizz_buzz.py
 python fizz_buzz.py
 # 1
 # 2
@@ -139,26 +144,26 @@ python fizz_buzz.py
 # ...
 ```
 
-We can also use pipes to pass input:
+我们还可以使用管道传递输入：
 ```shell
-cat fizz_buzz.py | sgpt --code "Generate comments for each line of my code"
+cat fizz_buzz.py | sgpt --code "为我的代码的每一行生成注释"
 ```
 ```python
-# Loop through numbers 1 to 100
+# 循环遍历从1到100的数字
 for i in range(1, 101):
-    # Check if number is divisible by both 3 and 5
+    # 检查数字是否既能被3整除又能被5整除
     if i % 3 == 0 and i % 5 == 0:
-        # Print "FizzBuzz" if number is divisible by both 3 and 5
+        # 如果数字能被3和5同时整除，打印"FizzBuzz"
         print("FizzBuzz")
-    # Check if number is divisible by 3
+    # 检查数字是否能被3整除
     elif i % 3 == 0:
-        # Print "Fizz" if number is divisible by 3
+        # 如果数字能被3整除，打印"Fizz"
         print("Fizz")
-    # Check if number is divisible by 5
+    # 检查数字是否能被5整除
     elif i % 5 == 0:
-        # Print "Buzz" if number is divisible by 5
+        # 如果数字能被5整除，打印"Buzz"
         print("Buzz")
-    # If number is not divisible by 3 or 5, print the number itself
+    # 如果数字既不能被3整除也不能被5整除，打印数字本身
     else:
         print(i)
 ```
@@ -228,8 +233,8 @@ sgpt --show-chat conversation_1
 # assistant: Your favorite number is 4, so if we add 4 to it, the result would be 8.
 ```
 
-### REPL Mode  
-There is very handy REPL (read–eval–print loop) mode, which allows you to interactively chat with GPT models. To start a chat session in REPL mode, use the `--repl` option followed by a unique session name. You can also use "temp" as a session name to start a temporary REPL session. Note that `--chat` and `--repl` are using same underlying object, so you can use `--chat` to start a chat session and then pick it up with `--repl` to continue the conversation in REPL mode.
+### REPL 模式
+有一个非常方便的 REPL（读取-求值-打印循环）模式，它允许您与 GPT 模型进行交互式聊天。要在 REPL 模式下开始一个聊天会话，请使用 `--repl` 选项后面跟一个唯一的会话名称。您还可以使用 "temp" 作为会话名称来启动临时 REPL 会话。请注意，`--chat` 和 `--repl` 使用相同的底层对象，因此您可以使用 `--chat` 来启动一个聊天会话，然后使用 `--repl` 来继续在 REPL 模式下进行对话。
 
 <p align="center">
   <img src="https://s10.gifyu.com/images/repl-demo.gif" alt="gif">
@@ -237,60 +242,60 @@ There is very handy REPL (read–eval–print loop) mode, which allows you to in
 
 ```text
 sgpt --repl temp
-Entering REPL mode, press Ctrl+C to exit.
->>> What is REPL?
-REPL stands for Read-Eval-Print Loop. It is a programming environment ...
->>> How can I use Python with REPL?
-To use Python with REPL, you can simply open a terminal or command prompt ...
+进入 REPL 模式，按 Ctrl+C 退出。
+>>> 什么是 REPL？
+REPL 代表读取-求值-打印循环。它是一个编程环境...
+>>> 如何在 REPL 中使用 Python？
+要在 REPL 中使用 Python，您可以简单地打开终端或命令提示符...
 ```
 
-REPL mode can work with `--shell` and `--code` options, which makes it very handy for interactive shell commands and code generation:
+REPL 模式可以与 `--shell` 和 `--code` 选项一起使用，非常方便进行交互式的 shell 命令和代码生成：
 ```text
 sgpt --repl temp --shell
-Entering shell REPL mode, type [e] to execute commands or press Ctrl+C to exit.
->>> What is in current folder?
+进入 shell REPL 模式，输入 [e] 执行命令，或按 Ctrl+C 退出。
+>>> 当前文件夹中有什么？
 ls
->>> Show file sizes
+>>> 显示文件大小
 ls -lh
->>> Sort them by file sizes
+>>> 按文件大小排序它们
 ls -lhS
->>> e (enter just e to execute commands, or d to describe them)
+>>> e（仅输入 e 执行命令，或输入 d 进行描述）
 ```
 
-To provide multiline prompt use triple quotes `"""`:
+要提供多行提示，请使用三个引号 `"""`：
 ```text
 sgpt --repl temp
-Entering REPL mode, press Ctrl+C to exit.
+进入 REPL 模式，按 Ctrl+C 退出。
 >>> """
-... Explain following code:
+... 解释以下代码：
 ... import random
 ... print(random.randint(1, 10))
 ... """
-It is a Python script that uses the random module to generate and print a random integer.
+这是一个使用 random 模块生成和打印随机整数的 Python 脚本。
 ```
 
-You can also enter REPL mode with initial prompt by passing it as an argument or stdin or even both:
+您还可以通过将其作为参数或标准输入甚至两者同时传递来使用初始提示进入 REPL 模式：
 ```shell
 sgpt --repl temp < my_app.py
 ```
 ```text
-Entering REPL mode, press Ctrl+C to exit.
-──────────────────────────────────── Input ────────────────────────────────────
+进入 REPL 模式，按 Ctrl+C 退出。
+─────────────────────────────────────── 输入 ────────────────────────────────────
 name = input("What is your name?")
 print(f"Hello {name}")
 ───────────────────────────────────────────────────────────────────────────────
->>> What is this code about?
-The snippet of code you've provided is written in Python. It prompts the user...
->>> Follow up questions...
+>>> 这段代码是关于什么的？
+您提供的代码片段是用 Python 编写的。它提示用户...
+>>> 后续问题...
 ```
 
-### Function calling  
-[Function calls](https://platform.openai.com/docs/guides/function-calling) is a powerful feature OpenAI provides. It allows LLM to execute functions in your system, which can be used to accomplish a variety of tasks. To install [default functions](https://github.com/TheR1D/shell_gpt/tree/main/sgpt/default_functions/) run:
+### 函数调用
+[函数调用](https://platform.openai.com/docs/guides/function-calling)是OpenAI提供的一个强大功能。它允许LLM在您的系统中执行函数，用于完成各种任务。要安装[默认函数](https://github.com/TheR1D/shell_gpt/tree/main/sgpt/default_functions/)，请运行:
 ```shell
 sgpt --install-functions
 ```
 
-ShellGPT has a convenient way to define functions and use them. In order to create your custom function, navigate to `~/.config/shell_gpt/functions` and create a new .py file with the function name. Inside this file, you can define your function using the following syntax:
+ShellGPT提供了一种方便的方法来定义和使用函数。为了创建您的自定义函数，请转到`~/.config/shell_gpt/functions`并创建一个新的.py文件，文件名为函数名。在这个文件中，您可以使用以下语法来定义您的函数:
 ```python
 # execute_shell_command.py
 import subprocess
@@ -300,9 +305,9 @@ from instructor import OpenAISchema
 
 class Function(OpenAISchema):
     """
-    Executes a shell command and returns the output (result).
+    执行一个shell命令并返回输出（结果）。
     """
-    shell_command: str = Field(..., example="ls -la", descriptions="Shell command to execute.")
+    shell_command: str = Field(..., example="ls -la", descriptions="要执行的shell命令。")
 
     class Config:
         title = "execute_shell_command"
@@ -310,45 +315,45 @@ class Function(OpenAISchema):
     @classmethod
     def execute(cls, shell_command: str) -> str:
         result = subprocess.run(shell_command.split(), capture_output=True, text=True)
-        return f"Exit code: {result.returncode}, Output:\n{result.stdout}"
+        return f"退出码: {result.returncode}, 输出:\n{result.stdout}"
 ```
 
-The docstring comment inside the class will be passed to OpenAI API as a description for the function, along with the `title` attribute and parameters descriptions. The `execute` function will be called if LLM decides to use your function. In this case we are allowing LLM to execute any Shell commands in our system. Since we are returning the output of the command, LLM will be able to analyze it and decide if it is a good fit for the prompt. Here is an example how the function might be executed by LLM:
+类内的文档字符串注释将作为函数的描述传递给OpenAI API，还有`title`属性和参数描述。如果LLM决定使用您的函数，将调用`execute`函数。在这种情况下，我们允许LLM在我们的系统中执行任何Shell命令。由于我们返回了命令的输出，LLM将能够分析它并决定是否适合提示。以下是LLM可能执行该函数的示例:
 ```shell
-sgpt "What are the files in /tmp folder?"
+sgpt "查看/tmp文件夹中的文件有哪些?"
 # -> @FunctionCall execute_shell_command(shell_command="ls /tmp")
-# -> The /tmp folder contains the following files and directories:
+# -> /tmp文件夹包含以下文件和目录:
 # -> test.txt
 # -> test.json
 ```
 
-Note that if for some reason the function (execute_shell_command) will return an error, LLM might try to accomplish the task based on the output. Let's say we don't have installed `jq` in our system, and we ask LLM to parse JSON file:
+请注意，如果由于某种原因函数（execute_shell_command）返回错误，LLM可能会根据输出尝试完成任务。假设我们的系统中没有安装`jq`，我们要求LLM解析JSON文件:
 ```shell
-sgpt "parse /tmp/test.json file using jq and return only email value"
+sgpt "使用jq解析/tmp/test.json文件并仅返回email值"
 # -> @FunctionCall execute_shell_command(shell_command="jq -r '.email' /tmp/test.json")
-# -> It appears that jq is not installed on the system. Let me try to install it using brew.
+# -> 看起来系统中没有安装jq。让我试着使用brew安装它。
 # -> @FunctionCall execute_shell_command(shell_command="brew install jq")
-# -> jq has been successfully installed. Let me try to parse the file again.
+# -> jq已成功安装。让我再次尝试解析文件。
 # -> @FunctionCall execute_shell_command(shell_command="jq -r '.email' /tmp/test.json")
-# -> The email value in /tmp/test.json is johndoe@example.
+# -> /tmp/test.json中的email值是johndoe@example。
 ```
 
-It is also possible to chain multiple function calls in the prompt:
+还可以在提示中链接多个函数调用:
 ```shell
-sgpt "Play music and open hacker news"
+sgpt "播放音乐并打开黑客新闻"
 # -> @FunctionCall play_music()
 # -> @FunctionCall open_url(url="https://news.ycombinator.com")
-# -> Music is now playing, and Hacker News has been opened in your browser. Enjoy!
+# -> 音乐正在播放，并且黑客新闻已在您的浏览器中打开。享受吧！
 ```
 
-This is just a simple example of how you can use function calls. It is truly a powerful feature that can be used to accomplish a variety of complex tasks. We have dedicated [category](https://github.com/TheR1D/shell_gpt/discussions/categories/functions) in GitHub Discussions for sharing and discussing functions. 
-LLM might execute destructive commands, so please use it at your own risk❗️
+这只是一个简单的示例，介绍了如何使用函数调用。它是一个真正强大的功能，可用于完成各种复杂的任务。我们在GitHub讨论中专门设有一个[类别](https://github.com/TheR1D/shell_gpt/discussions/categories/functions)用于共享和讨论函数。
+LLM可能执行破坏性命令，请自行承担风险❗️
 
-### Roles
-ShellGPT allows you to create custom roles, which can be utilized to generate code, shell commands, or to fulfill your specific needs. To create a new role, use the `--create-role` option followed by the role name. You will be prompted to provide a description for the role, along with other details. This will create a JSON file in `~/.config/shell_gpt/roles` with the role name. Inside this directory, you can also edit default `sgpt` roles, such as **shell**, **code**, and **default**. Use the `--list-roles` option to list all available roles, and the `--show-role` option to display the details of a specific role. Here's an example of a custom role:
+### 角色
+ShellGPT允许你创建自定义角色，用于生成代码、shell命令或满足你的特定需求。要创建新角色，使用`--create-role`选项后跟角色名称。你将被要求提供角色的描述以及其他细节。这将在`~/.config/shell_gpt/roles`目录下创建一个以角色名称命名的JSON文件。在这个目录中，你还可以编辑默认的`sgpt`角色，如**shell**、**code**和**default**。使用`--list-roles`选项列出所有可用角色，使用`--show-role`选项显示特定角色的详细信息。下面是一个自定义角色的示例：
 ```shell
 sgpt --create-role json_generator
-# Enter role description: Provide only valid json as response.
+# 输入角色描述：只提供有效的JSON作为响应。
 sgpt --role json_generator "random: user, password, email, address"
 ```
 ```json
@@ -365,58 +370,58 @@ sgpt --role json_generator "random: user, password, email, address"
 }
 ```
 
-If the description of the role contains the words "APPLY MARKDOWN" (case sensitive), then chats will be displayed using markdown formatting.
+如果角色的描述中包含"APPLY MARKDOWN"（区分大小写）一词，则聊天将以Markdown格式显示。
 
-### Request cache
-Control cache using `--cache` (default) and `--no-cache` options. This caching applies for all `sgpt` requests to OpenAI API:
+### 请求缓存
+使用`--cache`（默认）和`--no-cache`选项来控制缓存。这个缓存适用于所有对OpenAI API的`sgpt`请求：
 ```shell
 sgpt "what are the colors of a rainbow"
 # -> The colors of a rainbow are red, orange, yellow, green, blue, indigo, and violet.
 ```
-Next time, same exact query will get results from local cache instantly. Note that `sgpt "what are the colors of a rainbow" --temperature 0.5` will make a new request, since we didn't provide `--temperature` (same applies to `--top-probability`) on previous request.
+下次，相同的查询将从本地缓存中立即获取结果。注意，`sgpt "what are the colors of a rainbow" --temperature 0.5`将发起一个新的请求，因为我们没有在上次请求中提供`--temperature`（`--top-probability`也是如此）。
 
-This is just some examples of what we can do using OpenAI GPT models, I'm sure you will find it useful for your specific use cases.
+这只是一些使用OpenAI GPT模型的示例，我相信你会发现在你的特定用例中它非常有用。
 
-### Runtime configuration file
-You can setup some parameters in runtime configuration file `~/.config/shell_gpt/.sgptrc`:
+### 运行时配置文件
+你可以在运行时配置文件`~/.config/shell_gpt/.sgptrc`中设置一些参数：
 ```text
-# API key, also it is possible to define OPENAI_API_KEY env.
+# API密钥，也可以使用OPENAI_API_KEY环境变量定义。
 OPENAI_API_KEY=your_api_key
-# Base URL of the backend server. If "default" URL will be resolved based on --model.
+# 后端服务器的基本URL。如果为"default"，将根据--model解析URL。
 API_BASE_URL=default
-# Max amount of cached message per chat session.
+# 每个聊天会话中缓存的最大消息数量。
 CHAT_CACHE_LENGTH=100
-# Chat cache folder.
+# 聊天缓存文件夹。
 CHAT_CACHE_PATH=/tmp/shell_gpt/chat_cache
-# Request cache length (amount).
+# 请求缓存长度（数量）。
 CACHE_LENGTH=100
-# Request cache folder.
+# 请求缓存文件夹。
 CACHE_PATH=/tmp/shell_gpt/cache
-# Request timeout in seconds.
+# 请求超时时间（秒）。
 REQUEST_TIMEOUT=60
-# Default OpenAI model to use.
+# 默认使用的OpenAI模型。
 DEFAULT_MODEL=gpt-3.5-turbo
-# Default color for shell and code completions.
+# shell和code完成的默认颜色。
 DEFAULT_COLOR=magenta
-# When in --shell mode, default to "Y" for no input.
+# 当处于--shell模式时，默认为不输入。
 DEFAULT_EXECUTE_SHELL_CMD=false
-# Disable streaming of responses
+# 禁用响应的流式传输
 DISABLE_STREAMING=false
-# The pygment theme to view markdown (default/describe role).
+# 用于查看Markdown的pygment主题（默认/描述角色）。
 CODE_THEME=default
-# Path to a directory with functions.
+# 包含函数的目录路径。
 OPENAI_FUNCTIONS_PATH=/Users/user/.config/shell_gpt/functions
-# Print output of functions when LLM uses them.
+# 使用函数时打印函数的输出。
 SHOW_FUNCTIONS_OUTPUT=false
-# Allows LLM to use functions.
+# 允许LLM使用函数。
 OPENAI_USE_FUNCTIONS=true
-# Enforce LiteLLM usage (for local LLMs).
+# 强制使用LiteLLM（用于本地LLM）。
 USE_LITELLM=false
 ```
-Possible options for `DEFAULT_COLOR`: black, red, green, yellow, blue, magenta, cyan, white, bright_black, bright_red, bright_green, bright_yellow, bright_blue, bright_magenta, bright_cyan, bright_white.
-Possible options for `CODE_THEME`: https://pygments.org/styles/
+`DEFAULT_COLOR`的可能选项：black、red、green、yellow、blue、magenta、cyan、white、bright_black、bright_red、bright_green、bright_yellow、bright_blue、bright_magenta、bright_cyan、bright_white。
+`CODE_THEME`的可能选项：https://pygments.org/styles/
 
-### Full list of arguments
+### 参数的完整列表
 ```text
 ╭─ Arguments ──────────────────────────────────────────────────────────────────────────────────────────────╮
 │   prompt      [PROMPT]  The prompt to generate completions for.                                          │
@@ -453,26 +458,26 @@ Possible options for `CODE_THEME`: https://pygments.org/styles/
 ```
 
 ## Docker
-Run the container using the `OPENAI_API_KEY` environment variable, and a docker volume to store cache:
+使用 `OPENAI_API_KEY` 环境变量以及容器卷来运行容器以存储缓存:
 ```shell
 docker run --rm \
-           --env OPENAI_API_KEY="your OPENAI API key" \
+           --env OPENAI_API_KEY="你的 OPENAI API 密钥" \
            --volume gpt-cache:/tmp/shell_gpt \
        ghcr.io/ther1d/shell_gpt --chat rainbow "what are the colors of a rainbow"
 ```
 
-Example of a conversation, using an alias and the `OPENAI_API_KEY` environment variable:
+使用别名和 `OPENAI_API_KEY` 环境变量的对话示例:
 ```shell
 alias sgpt="docker run --rm --env OPENAI_API_KEY --volume gpt-cache:/tmp/shell_gpt ghcr.io/ther1d/shell_gpt"
-export OPENAI_API_KEY="your OPENAI API key"
+export OPENAI_API_KEY="你的 OPENAI API 密钥"
 sgpt --chat rainbow "what are the colors of a rainbow"
 sgpt --chat rainbow "inverse the list of your last answer"
 sgpt --chat rainbow "translate your last answer in french"
 ```
 
-You also can use the provided `Dockerfile` to build your own image:
+你还可以使用提供的 `Dockerfile` 来构建自己的镜像:
 ```shell
 docker build -t sgpt .
 ```
 
-Additional documentation: [Azure integration](https://github.com/TheR1D/shell_gpt/wiki/Azure), [Ollama integration](https://github.com/TheR1D/shell_gpt/wiki/Ollama).
+附加文档: [Azure 集成](https://github.com/TheR1D/shell_gpt/wiki/Azure), [Ollama 集成](https://github.com/TheR1D/shell_gpt/wiki/Ollama).
