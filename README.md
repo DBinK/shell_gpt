@@ -168,20 +168,20 @@ for i in range(1, 101):
         print(i)
 ```
 
-### Chat Mode 
-Often it is important to preserve and recall a conversation. `sgpt` creates conversational dialogue with each LLM completion requested. The dialogue can develop one-by-one (chat mode) or interactively, in a REPL loop (REPL mode). Both ways rely on the same underlying object, called a chat session. The session is located at the [configurable](#runtime-configuration-file) `CHAT_CACHE_PATH`.
+### 聊天模式 
+经常需要保留和回顾对话。`sgpt`会在每次请求LLM完成时创建对话式对话。对话可以逐步发展（聊天模式）或以REPL循环的方式进行交互（REPL模式）。两种方式都依赖于同一个称为对话会话的基础对象，该会话位于[可配置](#运行时配置文件)的`CHAT_CACHE_PATH`位置。
 
-To start a conversation, use the `--chat` option followed by a unique session name and a prompt.
+要开始对话，请使用`--chat`选项，后面跟着一个唯一的会话名称和一个提示。
 ```shell
-sgpt --chat conversation_1 "please remember my favorite number: 4"
-# -> I will remember that your favorite number is 4.
-sgpt --chat conversation_1 "what would be my favorite number + 4?"
-# -> Your favorite number is 4, so if we add 4 to it, the result would be 8.
+sgpt --chat conversation_1 "请记住我的最喜欢的数字：4"
+# -> 我将记住你最喜欢的数字是4。
+sgpt --chat conversation_1 "我的最喜欢的数字加上4会是多少？"
+# -> 你最喜欢的数字是4，所以如果我们加上4，结果将是8。
 ```
 
-You can use chat sessions to iteratively improve GPT suggestions by providing additional details.  It is possible to use `--code` or `--shell` options to initiate `--chat`:
+您可以使用聊天会话逐步改进GPT的建议，提供额外的细节。可以使用`--code`或`--shell`选项来启动`--chat`：
 ```shell
-sgpt --chat conversation_2 --code "make a request to localhost using python"
+sgpt --chat conversation_2 --code "使用Python向localhost发送请求"
 ```
 ```python
 import requests
@@ -190,9 +190,9 @@ response = requests.get('http://localhost')
 print(response.text)
 ```
 
-Let's ask LLM to add caching to our request:
+让我们请求LLM为我们的请求添加缓存：
 ```shell
-sgpt --chat conversation_2 --code "add caching"
+sgpt --chat conversation_2 --code "添加缓存"
 ```
 ```python
 import requests
@@ -205,32 +205,32 @@ response = cached_sess.get('http://localhost')
 print(response.text)
 ```
 
-Same applies for shell commands:
+对于shell命令也适用：
 ```shell
-sgpt --chat conversation_3 --shell "what is in current folder"
+sgpt --chat conversation_3 --shell "当前文件夹中的内容是什么"
 # -> ls
-sgpt --chat conversation_3 "Sort by name"
+sgpt --chat conversation_3 "按名称排序"
 # -> ls | sort
-sgpt --chat conversation_3 "Concatenate them using FFMPEG"
+sgpt --chat conversation_3 "使用FFMPEG将它们连接起来"
 # -> ffmpeg -i "concat:$(ls | sort | tr '\n' '|')" -codec copy output.mp4
-sgpt --chat conversation_3 "Convert the resulting file into an MP3"
+sgpt --chat conversation_3 "将生成的文件转换为MP3格式"
 # -> ffmpeg -i output.mp4 -vn -acodec libmp3lame -ac 2 -ab 160k -ar 48000 final_output.mp3
 ```
 
-To list all the sessions from either conversational mode, use the `--list-chats` or `-lc` option:  
+要列出任一对话模式中的所有会话，请使用`--list-chats`或`-lc`选项：  
 ```shell
 sgpt --list-chats
 # .../shell_gpt/chat_cache/conversation_1  
 # .../shell_gpt/chat_cache/conversation_2
 ```
 
-To show all the messages related to a specific conversation, use the `--show-chat` option followed by the session name:
+要显示与特定对话相关的所有消息，请使用`--show-chat`选项，后面跟着会话名称：
 ```shell
 sgpt --show-chat conversation_1
-# user: please remember my favorite number: 4
-# assistant: I will remember that your favorite number is 4.
-# user: what would be my favorite number + 4?
-# assistant: Your favorite number is 4, so if we add 4 to it, the result would be 8.
+# user: 请记住我的最喜欢的数字：4
+# assistant: 我将记住你最喜欢的数字是4。
+# user: 我的最喜欢的数字加上4会是多少？
+# assistant: 你最喜欢的数字是4，所以如果我们加上4，结果将是8。
 ```
 
 ### REPL 模式
