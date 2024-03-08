@@ -47,11 +47,11 @@ sgpt << EOF
 提供一个简单的 hello world 示例。
 EOF
 # -> 学习 Golang 的最佳方法是...
-sgpt <<< "什么是学习 hell 重定向的最佳方式？"
-# -> 学习 hell 重定向的最佳方式是通过...
+sgpt <<< "什么是学习 shell 重定向的最佳方式？"
+# -> 学习 shell 重定向的最佳方式是通过...
 ```
 
-当然！使用 Shell GPT，您可以快速生成常见的 hell 命令。只需使用`--shell`或`-s`选项，即可在终端中生成和执行所需的命令。
+当然！使用 Shell GPT，您可以快速生成常见的 shell 命令。只需使用`--shell`或`-s`选项，即可在终端中生成和执行所需的命令。
 
 ```shell
 sgpt --shell "在当前文件夹中查找所有 json 文件"
@@ -59,7 +59,7 @@ sgpt --shell "在当前文件夹中查找所有 json 文件"
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-Shell GPT 会根据您使用的操作系统和`$SHELL`环境变量提供特定系统的 hell 命令。例如，如果您要求`sgpt`更新您的系统，它将返回基于您的操作系统的命令。下面是在 macOS 上的示例：
+Shell GPT 会根据您使用的操作系统和`$SHELL`环境变量提供特定系统的 shell 命令。例如，如果您要求`sgpt`更新您的系统，它将返回基于您的操作系统的命令。下面是在 macOS 上的示例：
 
 ```shell
 sgpt -s "更新我的系统"
@@ -83,7 +83,7 @@ sgpt -s "启动 nginx 容器，挂载./index.html"
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-我们仍然可以使用管道将输入传递给`sgpt`并生成 hell 命令：
+我们仍然可以使用管道将输入传递给`sgpt`并生成 shell 命令：
 
 ```shell
 sgpt -s "使用以下数据在 localhost 上进行 POST 请求" < data.json
@@ -91,7 +91,7 @@ sgpt -s "使用以下数据在 localhost 上进行 POST 请求" < data.json
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-在提示中应用额外的 hell 技巧，例如将文件名传递给`ffmpeg`：
+在提示中应用额外的 shell 技巧，例如将文件名传递给`ffmpeg`：
 
 ```shell
 ls
@@ -101,7 +101,7 @@ sgpt -s "使用 $(ls -m) 将多个视频文件合并为一个没有音频的视�
 # -> [E]xecute, [D]escribe, [A]bort: e
 ```
 
-如果您想使用管道传递生成的 hell 命令，可以使用`--no-interaction`选项。这将禁用交互模式，并将生成的命令打印到 tdout。在此示例中，我们使用`pbcopy`将生成的命令复制到剪贴板：
+如果您想使用管道传递生成的 shell 命令，可以使用`--no-interaction`选项。这将禁用交互模式，并将生成的命令打印到 tdout。在此示例中，我们使用`pbcopy`将生成的命令复制到剪贴板：
 
 ```shell
 sgpt -s "在当前文件夹中查找所有 json 文件" --no-interaction | pbcopy
@@ -205,7 +205,7 @@ response = cached_sess.get('http://localhost')
 print(response.text)
 ```
 
-对于 hell 命令也适用：
+对于 shell 命令也适用：
 ```shell
 sgpt --chat conversation_3 --shell "当前文件夹中的内容是什么"
 # -> ls
@@ -305,9 +305,9 @@ from instructor import OpenAISchema
 
 class Function(OpenAISchema):
     """
-    执行一个 hell 命令并返回输出（结果）。
+    执行一个 shell 命令并返回输出（结果）。
     """
-    shell_command: str = Field(..., example="ls -la", descriptions="要执行的 hell 命令。")
+    shell_command: str = Field(..., example="ls -la", descriptions="要执行的 shell 命令。")
 
     class Config:
         title = "execute_shell_command"
